@@ -14,10 +14,10 @@ public class Deck {
         String[] colors = {"red", "blue", "green", "yellow"};
 
         for (String color : colors) {
-            cards.add(new NumberCard(color, 0)); // One zero per color
+            cards.add(new NumberCard(color, 0)); 
             for (int i = 1; i <= 9; i++) {
                 cards.add(new NumberCard(color, i));
-                cards.add(new NumberCard(color, i)); // Two of each number
+                cards.add(new NumberCard(color, i)); 
             }
         }
 

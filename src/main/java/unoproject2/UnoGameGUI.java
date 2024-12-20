@@ -2,149 +2,34 @@ package unoproject2;
 
 import java.awt.*;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class UnoGameGUI extends JFrame {
-    private JPanel mainPanel;
     private JPanel contentPanel;
-    private JPanel playerHandPanel;
-    private JPanel topCardPanel;
     private JLabel topCardLabel;
+    private JPanel playerHandPanel;
     private JLabel statusLabel;
-    private boolean isGameStarted = false;
+    private int numPlayers;
+    private JComboBox<String>[] playerTypeSelectors;
+    private boolean isGameStarted;
 
     public UnoGameGUI() {
-        initializeFrame();
-        if (!isGameStarted) {
-            initializeMainMenu();
-        } else {
-            initializeGameComponents();
-            layoutGameComponents();
-        }
-    }
+        // Initialize components
+        contentPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon background = new ImageIcon(getClass().getResource("/background.png"));
+                g.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        contentPanel.setLayout(new BorderLayout());
+        add(contentPanel);
 
-    private void initializeFrame() {
-        setTitle("UNO Game");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Set default size for the window
         setSize(800, 600);
-        setLocationRelativeTo(null);
-    }
 
-    private void initializeMainMenu() {
-        mainPanel = createMainPanel();
-        mainPanel.setLayout(new BorderLayout());
-        contentPanel = new JPanel();
-        contentPanel.setOpaque(false);
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
-        setContentPane(mainPanel);
-        showPlayerSelectionScreen();
-    }
-
-    private void initializeComponents() {
-        mainPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-                    Image bg = ImageIO.read(getClass().getResource("resources/images/background.jpg"));
-                    g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
-                } catch (Exception e) {
-                    setBackground(new Color(0, 100, 0)); // Fallback color
-                    e.printStackTrace();
-                }
-            }
-        };
-    }
-    private void initializeGameComponents() {
-        mainPanel = createMainPanel();
-        mainPanel.setLayout(new BorderLayout());
-
-        topCardPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        topCardPanel.setOpaque(false);
-        topCardLabel = new JLabel();
-        topCardPanel.add(topCardLabel);
-
-        statusLabel = new JLabel("Welcome to UNO!");
-        statusLabel.setForeground(Color.WHITE);
-        statusLabel.setHorizontalAlignment(JLabel.CENTER);
-        statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
-
-        playerHandPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        playerHandPanel.setOpaque(false);
-    }
-
-    private void layoutGameComponents() {
-        mainPanel.add(statusLabel, BorderLayout.NORTH);
-        mainPanel.add(topCardPanel, BorderLayout.CENTER);
-        mainPanel.add(playerHandPanel, BorderLayout.SOUTH);
-        setContentPane(mainPanel);
-    }
-
-    private JPanel createMainPanel() {
-        return new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-                    Image bg = ImageIO.read(getClass().getResource("resources/images/background.jpg"));
-                    g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
-                } catch (Exception e) {
-                    setBackground(new Color(0, 100, 0));
-                    e.printStackTrace();
-                }
-            }
-        };
-    }
-
-    private void showPlayerSelectionScreen() {
-        contentPanel.removeAll();
-        contentPanel.setLayout(new GridLayout(2, 1));
-
-        JLabel label = new JLabel("Choose Number of Players", JLabel.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 24));
-        label.setForeground(Color.WHITE);
-        contentPanel.add(label);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        buttonPanel.setOpaque(false);
-
-        for (int i = 2; i <= 4; i++) {
-            addPlayerButton(buttonPanel, i + " Players", i);
-        }
-
-        contentPanel.add(buttonPanel);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    private void showPlayerTypeSelectionScreen(int numPlayers) {
-        contentPanel.removeAll();
-        contentPanel.setLayout(new GridLayout(numPlayers + 2, 1));
-
-        JLabel label = new JLabel("Select Player Types", JLabel.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 24));
-        label.setForeground(Color.WHITE);
-        contentPanel.add(label);
-
-        JComboBox<String>[] playerTypeSelectors = new JComboBox[numPlayers];
-
-        for (int i = 0; i < numPlayers; i++) {
-            JPanel playerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            playerPanel.setOpaque(false);
-
-            JLabel playerLabel = new JLabel("Player " + (i + 1));
-            playerLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-            playerLabel.setForeground(Color.WHITE);
-
-            playerTypeSelectors[i] = new JComboBox<>(new String[]{"Human", "AI"});
-            playerTypeSelectors[i].setFont(new Font("Arial", Font.PLAIN, 18));
-
-            playerPanel.add(playerLabel);
-            playerPanel.add(playerTypeSelectors[i]);
-            contentPanel.add(playerPanel);
-        }
-
+        // Other initialization code...
         JButton startButton = new JButton("Start Game");
         startButton.setFont(new Font("Arial", Font.BOLD, 18));
         startButton.addActionListener(e -> {
@@ -154,7 +39,7 @@ public class UnoGameGUI extends JFrame {
             }
             startGame(numPlayers, playerTypes);
         });
-        contentPanel.add(startButton);
+        contentPanel.add(startButton, BorderLayout.SOUTH);
 
         contentPanel.revalidate();
         contentPanel.repaint();
@@ -238,5 +123,45 @@ public class UnoGameGUI extends JFrame {
     public void showGameOver(String winner) {
         JOptionPane.showMessageDialog(this, winner + " has won the game!", 
                 "Game Over", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void showPlayerTypeSelectionScreen(int numPlayers) {
+        this.numPlayers = numPlayers;
+        contentPanel.removeAll();
+        contentPanel.setLayout(new GridLayout(numPlayers + 1, 2));
+
+        playerTypeSelectors = new JComboBox[numPlayers];
+        for (int i = 0; i < numPlayers; i++) {
+            JLabel label = new JLabel("Player " + (i + 1) + " Type:");
+            label.setFont(new Font("Arial", Font.PLAIN, 18));
+            contentPanel.add(label);
+
+            playerTypeSelectors[i] = new JComboBox<>(new String[]{"Human", "AI"});
+            playerTypeSelectors[i].setFont(new Font("Arial", Font.PLAIN, 18));
+            contentPanel.add(playerTypeSelectors[i]);
+        }
+
+        JButton startButton = new JButton("Start Game");
+        startButton.setFont(new Font("Arial", Font.BOLD, 18));
+        startButton.addActionListener(e -> {
+            String[] playerTypes = new String[numPlayers];
+            for (int i = 0; i < numPlayers; i++) {
+                playerTypes[i] = playerTypeSelectors[i].getSelectedItem().toString().toLowerCase();
+            }
+            startGame(numPlayers, playerTypes);
+        });
+        contentPanel.add(startButton);
+
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            UnoGameGUI gui = new UnoGameGUI();
+            gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gui.setSize(800, 600);
+            gui.setVisible(true);
+        });
     }
 }

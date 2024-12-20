@@ -18,11 +18,11 @@ public class Game {
         initializeTopCard();
         turnManager = new TurnManager(numPlayers);
 
-        // Initialize GUI in a separate thread
+       
         SwingUtilities.invokeLater(() -> {
             gui = new UnoGameGUI();
             gui.setVisible(true);
-            updateGUI(); // Update GUI after it's visible
+            updateGUI(); 
         });
     }
 
@@ -60,14 +60,14 @@ public class Game {
         while (!gameWon) {
             Player currentPlayer = players.get(turnManager.getCurrentPlayerIndex());
             
-            // Update GUI for the current player's hand
+           
             if (currentPlayer instanceof HumanPlayer) {
                 gui.updatePlayerHand(currentPlayer.getHand());
             }
 
             Card playedCard = currentPlayer.playCard(topCard);
 
-            if (playedCard == null) { // No playable card
+            if (playedCard == null) { 
                 currentPlayer.drawCard(deck.drawCard());
                 turnManager.moveToNextPlayer();
                 updateGUI();
@@ -78,7 +78,7 @@ public class Game {
             handleCardEffect(playedCard);
             updateGUI();
 
-            if (currentPlayer.getHand().isEmpty()) { // Current player wins
+            if (currentPlayer.getHand().isEmpty()) { 
                 gui.showGameOver(currentPlayer.getName());
                 gameWon = true;
             } else {
@@ -86,7 +86,7 @@ public class Game {
             }
         }
 
-        // Optionally dispose of the GUI after the game ends
+       
         gui.dispose(); 
     }
 
@@ -141,7 +141,7 @@ public class Game {
     private void updateGUI() {
         Player currentPlayer = players.get(turnManager.getCurrentPlayerIndex());
         
-        // Ensure GUI is initialized before updating
+        
         if (gui != null) { 
             gui.updateTopCard(getCardImagePath(topCard));
             gui.updateGameStatus(currentPlayer.getName() + "'s turn");
