@@ -3,7 +3,7 @@ package unoproject2;
 
 public class TurnManager {
     private int currentPlayerIndex;
-    private boolean gameDirection; // true for clockwise, false for counterclockwise
+    private boolean gameDirection; 
     private int totalPlayers;
 
     public TurnManager(int totalPlayers) {

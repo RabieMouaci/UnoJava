@@ -18,11 +18,11 @@ public class WildCard extends Card {
 
     @Override
 public boolean isPlayable(Card topCard) {
-    // If this wild card has a chosen color, it must match the top card's color
+  
     if (this.getChosenColor() != null) {
         return this.getChosenColor().equals(topCard.getColor());
     }
-    // Otherwise, wild cards can always be played
+
     return true;
 }
 

@@ -11,6 +11,7 @@ class HumanPlayer extends Player {
 public Card playCard(Card topCard) {
     Scanner scanner = new Scanner(System.in);
     int choice = scanner.nextInt();
+    scanner.close();
     
     if (choice == -1) {
         return null;
@@ -18,6 +19,8 @@ public Card playCard(Card topCard) {
     
     Card chosenCard = getHand().get(choice);
     removeCard(chosenCard);
+    
     return chosenCard;
+
 }
 }
