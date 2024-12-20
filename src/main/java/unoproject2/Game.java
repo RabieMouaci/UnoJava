@@ -1,16 +1,13 @@
 package unoproject2;
 
 import java.util.*;
-import java.util.List;
 import javax.swing.*;
-
 
 public class Game {
     private Deck deck;
     private List<Player> players;
     private Card topCard;
     private TurnManager turnManager;
-    private GameStateDisplay gameStateDisplay;
     private UnoGameGUI gui;
 
     public Game(int numPlayers, List<String> playerTypes) {
@@ -20,12 +17,12 @@ public class Game {
         distributeCards();
         initializeTopCard();
         turnManager = new TurnManager(numPlayers);
-        gameStateDisplay = new GameStateDisplay();
-        
+
+        // Initialize GUI in a separate thread
         SwingUtilities.invokeLater(() -> {
             gui = new UnoGameGUI();
             gui.setVisible(true);
-            updateGUI();
+            updateGUI(); // Update GUI after it's visible
         });
     }
 
@@ -57,56 +54,40 @@ public class Game {
         } while (!(topCard instanceof NumberCard));
     }
 
-    private void updateGUI() {
-        Player currentPlayer = players.get(turnManager.getCurrentPlayerIndex());
-        gui.updateTopCard(getCardImagePath(topCard));
-        if (currentPlayer instanceof HumanPlayer) {
-            gui.updatePlayerHand(currentPlayer.getHand());
-        }
-        gui.updateGameStatus(currentPlayer.getName() + "'s turn");
-    }
-
-    private String getCardImagePath(Card card) {
-        if (card instanceof WildCard) {
-            WildCard wildCard = (WildCard) card;
-            if (wildCard.getChosenColor() != null) {
-                return "/resources/images/" + card.getType() + "_" + wildCard.getChosenColor() + ".jpg";
-            }
-            return "/resources/images/" + card.getType() + ".jpg";
-        }
-        return "/resources/images/" + card.getColor() + "_" + card.getType() + 
-               (card instanceof NumberCard ? card.getValue() : "") + ".jpg";
-    }
-
     public void startGame() {
         boolean gameWon = false;
+        
         while (!gameWon) {
             Player currentPlayer = players.get(turnManager.getCurrentPlayerIndex());
-            updateGUI();
+            
+            // Update GUI for the current player's hand
+            if (currentPlayer instanceof HumanPlayer) {
+                gui.updatePlayerHand(currentPlayer.getHand());
+            }
 
             Card playedCard = currentPlayer.playCard(topCard);
-            
-            if (playedCard == null) {
-                System.out.println(currentPlayer.getName() + " draws a card.");
+
+            if (playedCard == null) { // No playable card
                 currentPlayer.drawCard(deck.drawCard());
                 turnManager.moveToNextPlayer();
                 updateGUI();
                 continue;
             }
-            
+
             topCard = playedCard;
-            System.out.println(currentPlayer.getName() + " played: " + playedCard);
             handleCardEffect(playedCard);
             updateGUI();
 
-            if (currentPlayer.getHand().isEmpty()) {
-                System.out.println(currentPlayer.getName() + " has won the game!");
+            if (currentPlayer.getHand().isEmpty()) { // Current player wins
                 gui.showGameOver(currentPlayer.getName());
                 gameWon = true;
             } else {
                 turnManager.moveToNextPlayer();
             }
         }
+
+        // Optionally dispose of the GUI after the game ends
+        gui.dispose(); 
     }
 
     private void handleCardEffect(Card card) {
@@ -129,17 +110,17 @@ public class Game {
             if (wildCard.getType().equals("wild_draw4")) {
                 applyDrawCards(4);
             }
-            
+
             Player currentPlayer = players.get(turnManager.getCurrentPlayerIndex());
+            String[] colors = {"Red", "Blue", "Green", "Yellow"};
+            
             if (currentPlayer instanceof HumanPlayer) {
-                String[] options = {"Red", "Blue", "Green", "Yellow"};
-                int choice = gui.showColorChooser(options);
-                String chosenColor = options[choice].toLowerCase();
-                wildCard.setChosenColor(chosenColor);
-            } else {
-                String[] colors = {"red", "blue", "green", "yellow"};
-                wildCard.setChosenColor(colors[new Random().nextInt(colors.length)]);
+                int choice = gui.showColorChooser(colors);
+                wildCard.setChosenColor(colors[choice].toLowerCase());
+            } else { // AI chooses a random color
+                wildCard.setChosenColor(colors[new Random().nextInt(colors.length)].toLowerCase());
             }
+            
             gui.showMessage("Color changed to: " + wildCard.getChosenColor());
         }
     }
@@ -147,13 +128,36 @@ public class Game {
     private void applyDrawCards(int numCards) {
         turnManager.moveToNextPlayer();
         Player nextPlayer = players.get(turnManager.getCurrentPlayerIndex());
-        
+
         gui.showMessage(nextPlayer.getName() + " must draw " + numCards + " cards.");
         for (int i = 0; i < numCards; i++) {
             nextPlayer.drawCard(deck.drawCard());
         }
-        
+
         turnManager.moveToNextPlayer();
         updateGUI();
+    }
+
+    private void updateGUI() {
+        Player currentPlayer = players.get(turnManager.getCurrentPlayerIndex());
+        
+        // Ensure GUI is initialized before updating
+        if (gui != null) { 
+            gui.updateTopCard(getCardImagePath(topCard));
+            gui.updateGameStatus(currentPlayer.getName() + "'s turn");
+        }
+    }
+
+    private String getCardImagePath(Card card) {
+        if (card instanceof WildCard) {
+            WildCard wildCard = (WildCard) card;
+            if (wildCard.getChosenColor() != null) {
+                return "/resources/images/" + card.getType() + "_" + wildCard.getChosenColor() + ".jpg";
+            }
+            return "/resources/images/" + card.getType() + ".jpg";
+        }
+        
+        return "/resources/images/" + card.getColor() + "_" + card.getType() +
+               (card instanceof NumberCard ? card.getValue() : "") + ".jpg";
     }
 }

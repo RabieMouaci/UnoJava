@@ -47,3 +47,4 @@ public abstract class Card {
         return color + " " + type;
     }
 }
+
