@@ -1,30 +1,27 @@
-
 package unoproject2;
 
 public class TurnManager {
     private int currentPlayerIndex;
-    private boolean gameDirection; 
+    private int direction;  // 1 for normal, -1 for reverse
     private int totalPlayers;
 
     public TurnManager(int totalPlayers) {
         this.totalPlayers = totalPlayers;
         this.currentPlayerIndex = 0;
-        this.gameDirection = true;
+        this.direction = 1;
     }
 
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
 
-    public void reverseDirection() {
-        gameDirection = !gameDirection;
+    public void moveToNextPlayer() {
+        currentPlayerIndex = (currentPlayerIndex + direction + totalPlayers) % totalPlayers;
+        System.out.println("[TurnManager] moveToNextPlayer -> " + currentPlayerIndex);
     }
 
-    public void moveToNextPlayer() {
-        if (gameDirection) {
-            currentPlayerIndex = (currentPlayerIndex + 1) % totalPlayers;
-        } else {
-            currentPlayerIndex = (currentPlayerIndex - 1 + totalPlayers) % totalPlayers;
-        }
+    public void reverseDirection() {
+        direction *= -1;
+        System.out.println("[TurnManager] reverseDirection -> " + (direction == 1 ? "forward" : "reverse"));
     }
 }

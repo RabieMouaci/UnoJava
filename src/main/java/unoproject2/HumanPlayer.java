@@ -1,26 +1,14 @@
-
 package unoproject2;
-import java.util.*;
 
-class HumanPlayer extends Player {
+public class HumanPlayer extends Player {
     public HumanPlayer(String name) {
         super(name);
     }
 
-   @Override
-public Card playCard(Card topCard) {
-    Scanner scanner = new Scanner(System.in);
-    int choice = scanner.nextInt();
-    scanner.close();
-    
-    if (choice == -1) {
+    @Override
+    public Card playCard(Card topCard) {
+        // In this example, the GUI calls game.humanPlayerPlayedCard(index) instead of using this
+        // We'll return null to indicate "no card auto-play"
         return null;
     }
-    
-    Card chosenCard = getHand().get(choice);
-    removeCard(chosenCard);
-    
-    return chosenCard;
-
-}
 }

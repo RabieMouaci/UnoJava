@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // 1) Compile Java source files
+      "label": "Compile Java",
+      "type": "shell",
+      "command": "javac",
+      "args": [
+        "-cp",
+        "src/main/java",          // Classpath pointing to your source folder
+        "-d",
+        "bin",                    // Output directory for compiled .class files
+        "${workspaceFolder}/src/main/java/unoproject2/*.java"
+        // ^ If you have subpackages, you might need wildcard, e.g.: "**/*.java"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$java"
+      ]
+    },
+    {
+      // 2) Copy resources from src/main/resources to bin
+      "label": "Copy Resources",
+      "type": "shell",
+      // Using Windows "xcopy" for recursive copy
+      "command": "xcopy",
+      "args": [
+        "${workspaceFolder}\\src\\main\\resources",
+        "${workspaceFolder}\\bin",
+        "/E", // Copies subdirectories, including empty ones
+        "/I"  // If destination doesn't exist, assumes directory
+      ],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      // 3) A convenience "Build" task that depends on the two tasks above
+      "label": "Build",
+      "type": "shell",
+      "command": "echo",
+      "args": ["Running Build..."],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": [
+        "Compile Java",
+        "Copy Resources"
+      ]
+    }
+  ]
+}

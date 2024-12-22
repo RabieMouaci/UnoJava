@@ -1,11 +1,10 @@
-
 package unoproject2;
 
 public class WildCard extends Card {
-    private String chosenColor; // The color chosen after playing the card
+    private String chosenColor; // assigned after play
 
     public WildCard(String type) {
-        super("wild", type, -1); // Wild cards have no specific color initially
+        super("wild", type, -1);
     }
 
     public String getChosenColor() {
@@ -17,20 +16,16 @@ public class WildCard extends Card {
     }
 
     @Override
-public boolean isPlayable(Card topCard) {
-  
-    if (this.getChosenColor() != null) {
-        return this.getChosenColor().equals(topCard.getColor());
+    public boolean isPlayable(Card topCard) {
+        // wild is always playable
+        return true;
     }
 
-    return true;
-}
-
-     @Override
-public String toString() {
-    if (chosenColor != null) {
-        return getType() + " (" + chosenColor + ")";
+    @Override
+    public String toString() {
+        if (chosenColor != null) {
+            return getType() + "(" + chosenColor + ")";
+        }
+        return getType();
     }
-    return getType();
-}
 }

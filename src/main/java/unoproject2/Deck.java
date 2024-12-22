@@ -1,8 +1,12 @@
-
 package unoproject2;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 public class Deck {
-    protected List<Card> cards;
+    private List<Card> cards;
 
     public Deck() {
         cards = new ArrayList<>();
@@ -13,22 +17,16 @@ public class Deck {
     private void initializeDeck() {
         String[] colors = {"red", "blue", "green", "yellow"};
 
+        // Minimal: just put some NumberCards
         for (String color : colors) {
-            cards.add(new NumberCard(color, 0)); 
-            for (int i = 1; i <= 9; i++) {
+            for (int i = 0; i <= 9; i++) {
                 cards.add(new NumberCard(color, i));
-                cards.add(new NumberCard(color, i)); 
             }
+            // Add a skip or reverse to demonstrate special
+            cards.add(new SpecialCard(color, "skip"));
+            cards.add(new SpecialCard(color, "reverse"));
         }
-
-        for (String color : colors) {
-            for (int i = 0; i < 2; i++) {
-                cards.add(new SpecialCard(color, "reverse"));
-                cards.add(new SpecialCard(color, "skip"));
-                cards.add(new SpecialCard(color, "draw2"));
-            }
-        }
-
+        // Add a couple wild cards
         for (int i = 0; i < 4; i++) {
             cards.add(new WildCard("wild"));
             cards.add(new WildCard("wild_draw4"));
@@ -36,22 +34,15 @@ public class Deck {
     }
 
     private void shuffleDeck() {
-        Collections.shuffle(cards);
+        Collections.shuffle(cards, new Random());
     }
 
     public Card drawCard() {
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("The deck is empty!");
-        }
+        if (cards.isEmpty()) throw new IllegalStateException("Deck is empty!");
         return cards.remove(0);
     }
 
-    public int size() {
-        return cards.size();
-    }
-
-    @Override
-    public String toString() {
-        return "Deck contains " + cards.size() + " cards.";
+    public List<Card> getCards() {
+        return cards;
     }
 }

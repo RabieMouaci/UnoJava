@@ -1,21 +1,19 @@
 package unoproject2;
 
-import javax.swing.*;
-
-
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        // Optional: catch any uncaught exceptions
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            System.err.println("Uncaught exception in thread " + thread.getName() + ": " + throwable);
+            throwable.printStackTrace();
+        });
 
-            // Start the game GUI
-            new UnoGameGUI().setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            System.out.println("Launching UnoGameGUI...");
+            UnoGameGUI gui = new UnoGameGUI();
+            gui.setVisible(true);
         });
     }
 }
-

@@ -1,6 +1,8 @@
-
 package unoproject2;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class AIPlayer extends Player {
     public AIPlayer(String name) {
@@ -9,20 +11,18 @@ public class AIPlayer extends Player {
 
     @Override
     public Card playCard(Card topCard) {
-        List<Card> playableCards = new ArrayList<>();
-        for (Card card : getHand()) {
-            if (card.isPlayable(topCard)) {
-                playableCards.add(card);
+        List<Card> playable = new ArrayList<>();
+        for (Card c : getHand()) {
+            if (c.isPlayable(topCard)) {
+                playable.add(c);
             }
         }
-
-        if (!playableCards.isEmpty()) {
-            Card chosenCard = playableCards.get(new Random().nextInt(playableCards.size()));
-            removeCard(chosenCard);
-            return chosenCard;
+        if (!playable.isEmpty()) {
+            // pick random playable
+            Card chosen = playable.get(new Random().nextInt(playable.size()));
+            return chosen;
         }
-
-        return null; // No valid card, requires drawing a card
+        // if no card playable, return null (which means draw in the Game logic)
+        return null;
     }
 }
-

@@ -1,8 +1,9 @@
-
 package unoproject2;
-import java.util.*;
 
-public abstract class Player implements PlayerAction {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Player {
     private String name;
     private List<Card> hand;
 
@@ -19,21 +20,14 @@ public abstract class Player implements PlayerAction {
         return hand;
     }
 
-    public void drawCard(Card card) {
-        hand.add(card);
+    public void drawCard(Card c) {
+        hand.add(c);
     }
 
-    public void removeCard(Card card) {
-        hand.remove(card);
+    public void removeCard(Card c) {
+        hand.remove(c);
     }
 
-    @Override
-    public boolean hasPlayableCard(Card topCard) {
-        for (Card card : hand) {
-            if (card.isPlayable(topCard)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // Let each player define how they pick a card to play
+    public abstract Card playCard(Card topCard);
 }
