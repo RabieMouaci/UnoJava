@@ -16,11 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+/**
+ * UnoGameGUI - Fixed-size backgrounds and no runtime scaling
+ */
 public class UnoGameGUI extends JFrame {
 
+    // For drawing the background with no scaling
     private JPanel contentPanel;
-    private String currentBackground = "/images/background.jpg"; 
-    // By default, use "background.jpg" for screens 1 & 2
+    private String currentBackground = "/images/background.jpg";  // initial background path
+    private Image cachedBackground;  // holds the loaded background image
 
     // Screen 1 controls
     private JLabel screen1Label;
@@ -45,32 +49,46 @@ public class UnoGameGUI extends JFrame {
     public UnoGameGUI() {
         System.out.println("[UnoGameGUI] Constructor called.");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        
+        // Match your background image size:
+        setSize(782, 559);
         setLocationRelativeTo(null);
 
-        // Main content panel with a custom background
+        // Load the initial background image once:
+        loadBackgroundImage(currentBackground);
+
+        // Main content panel that draws the cachedBackground (no scaling)
         contentPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                try {
-                    // Load whichever background is in currentBackground
-                    ImageIcon bgIcon = new ImageIcon(getClass().getResource(currentBackground));
-                    Image bg = bgIcon.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-                    g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
-                } catch (Exception e) {
-                    // If image fails, fall back to green
+                // If background fails to load, use a green fallback
+                if (cachedBackground != null) {
+                    g.drawImage(cachedBackground, 0, 0, null);
+                } else {
                     setBackground(Color.GREEN);
-                    System.err.println("[UnoGameGUI] Failed to load background: " + currentBackground);
-                    e.printStackTrace();
                 }
             }
         };
         contentPanel.setLayout(null);
         add(contentPanel);
 
-        // Show screen 1 by default
+        // Show Screen 1 by default
         showScreen1();
+    }
+
+    /**
+     * Loads the background image from the given path into cachedBackground.
+     */
+    private void loadBackgroundImage(String path) {
+        try {
+            ImageIcon icon = new ImageIcon(getClass().getResource(path));
+            cachedBackground = icon.getImage(); // no scaling
+        } catch (Exception e) {
+            cachedBackground = null;
+            System.err.println("[UnoGameGUI] Failed to load background: " + path);
+            e.printStackTrace();
+        }
     }
 
     // ================================================
@@ -78,8 +96,10 @@ public class UnoGameGUI extends JFrame {
     // ================================================
     private void showScreen1() {
         System.out.println("[UnoGameGUI] showScreen1()");
-        // Use background.jpg for screens 1 & 2
+
+        // We want background.jpg for screen 1
         currentBackground = "/images/background.jpg";
+        loadBackgroundImage(currentBackground);
 
         contentPanel.removeAll();
 
@@ -112,7 +132,11 @@ public class UnoGameGUI extends JFrame {
     // ================================================
     private void showScreen2_PlayerTypes() {
         System.out.println("[UnoGameGUI] showScreen2_PlayerTypes()");
-        currentBackground = "/images/background.jpg"; // still the same background
+
+        // Still background.jpg for screen 2
+        currentBackground = "/images/background.jpg";
+        loadBackgroundImage(currentBackground);
+
         contentPanel.removeAll();
 
         screen2Label = new JLabel("Select Player Types:");
@@ -136,13 +160,14 @@ public class UnoGameGUI extends JFrame {
         startGameButton = new JButton("Start Game");
         startGameButton.setBounds(50, 100 + (numPlayers * 50), 120, 30);
         startGameButton.addActionListener(e -> {
-            System.out.println("[UnoGameGUI] Start Game button pressed.");
+            System.out.println("Start Game button pressed.");
             String[] playerTypes = new String[numPlayers];
             for (int i = 0; i < numPlayers; i++) {
                 playerTypes[i] = playerTypeSelectors[i].getSelectedItem().toString().toLowerCase();
-                System.out.println("Player " + (i + 1) + " type: " + playerTypes[i]);
+                System.out.println("Player " + (i+1) + " type: " + playerTypes[i]);
             }
             initializeGame(numPlayers, playerTypes);
+            System.out.println("initializeGame() called.");
         });
         contentPanel.add(startGameButton);
 
@@ -172,8 +197,10 @@ public class UnoGameGUI extends JFrame {
     // ================================================
     private void showMainGameScreen() {
         System.out.println("[UnoGameGUI] showMainGameScreen()");
-        // Switch to background2.jpg for screen 3
+
+        // Use background2 for screen 3
         currentBackground = "/images/background2.jpg";
+        loadBackgroundImage(currentBackground);
 
         contentPanel.removeAll();
 
@@ -215,10 +242,10 @@ public class UnoGameGUI extends JFrame {
             return;
         }
         try {
+            // Load the card image without scaling
             ImageIcon cardIcon = new ImageIcon(getClass().getResource(imagePath));
-            Image scaled = cardIcon.getImage().getScaledInstance(120, 180, Image.SCALE_SMOOTH);
-            topCardLabel.setIcon(new ImageIcon(scaled));
-            topCardLabel.setText("");
+            topCardLabel.setIcon(cardIcon);
+            topCardLabel.setText(""); 
         } catch (Exception e) {
             System.err.println("[UnoGameGUI] Could not load top card image: " + imagePath);
             e.printStackTrace();

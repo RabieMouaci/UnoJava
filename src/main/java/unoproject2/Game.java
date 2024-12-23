@@ -244,7 +244,7 @@ public class Game {
         } else if (card instanceof SpecialCard) {
             return "/images/" + card.getColor() + "_" + card.getType() + ".jpg";
         } else if (card instanceof NumberCard) {
-            return "/images/" + card.getColor() + "_number_" + card.getValue() + ".jpg";
+            return "/images/cards/" + card.getColor() + "_" + card.getValue() + ".jpg";
         }
         return "/images/uno.jpg"; // fallback
     }
