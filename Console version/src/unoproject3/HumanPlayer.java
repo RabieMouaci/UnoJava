@@ -13,11 +13,11 @@ public class HumanPlayer extends Player {
         Scanner scanner = new Scanner(System.in);
         System.out.println(name +" Turn");
         System.out.println("Your hand: " + hand);
-        System.out.println("Pick a card by index (0-based) or -1 to draw a card:");
+        System.out.println("Pick a card by index  or 0 to draw a card:");
 
         int choice;
         do {
-            choice = scanner.nextInt();
+            choice =( scanner.nextInt()-1);
             if (choice == -1) {
                 return null; // Indicate drawing a card
             } else if (choice >= 0 && choice < hand.size()) {
