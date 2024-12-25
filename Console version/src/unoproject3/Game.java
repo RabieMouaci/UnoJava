@@ -39,7 +39,7 @@ public class Game {
         }
     }
 
-    private void initializeTopCard() {
+    private void initializeTopCard() {//need to be colored
         do {
             Card card = deck.drawCard();
             if (card instanceof ColoredCard) {
@@ -48,7 +48,7 @@ public class Game {
                 table.setTableType(card.getType());
                 break;
             } else {
-                deck.getCards().add(card); // Put non-colored cards back in the deck
+                deck.getCards().add(card);
                 deck.shuffleDeck();
             }
         } while (true);
@@ -133,7 +133,7 @@ public class Game {
                 case 2 -> "blue";
                 case 3 -> "green";
                 case 4 -> "yellow";
-                default -> "red"; // Default to red, though this should never be hit
+                default -> "red"; // makach li rah yaghlet ms en sais jamais
             };
         } else {
             // Bots choose a random color

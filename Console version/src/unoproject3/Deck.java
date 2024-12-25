@@ -17,7 +17,7 @@ public class Deck {
     public void initializeDeck() {
         String[] colors = {"red", "blue", "green", "yellow"};
 
-        // Add NumberCards
+       
         for (String color : colors) {
             cards.add(new NumberCard(color, 0)); // One 0 card per color
             for (int i = 1; i <= 9; i++) {

@@ -14,7 +14,7 @@ public abstract class Card {
         return type;
     }
 
-    // Abstract method to check if the card is playable
+  
     public abstract boolean isPlayable(String tableColor, String tableType, Card topCard);
 
     @Override

@@ -22,7 +22,7 @@ public Card playCard(String tableColor, String tableType, Card topCard) {
     if (!playableCards.isEmpty()) {
         Card chosenCard = playableCards.get(new Random().nextInt(playableCards.size()));
         hand.remove(chosenCard);
-        return chosenCard; // Play a random valid card
+        return chosenCard; 
     }
 
     return null; // No playable card, bot needs to draw
