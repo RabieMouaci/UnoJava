@@ -6,6 +6,7 @@ import java.util.List;
 
 
 public class BotPlayer extends Player {
+    
     public BotPlayer(String name) {
         super(name);
     }

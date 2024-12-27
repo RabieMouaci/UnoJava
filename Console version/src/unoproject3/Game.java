@@ -1,18 +1,24 @@
 package unoproject3;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Random;
 
 
-public class Game {
+public class Game implements Serializable{
+    private static final long serialVersionUID = 1L;
     private Deck deck;
     private List<Player> players;
     private TurnManager turnManager;
     private Table table;
     private boolean gameWon;
+    private static Game instance;
+
 
     public Game(int numberOfPlayers, List<String> playerTypes, String initialTableColor, String initialTableType) {
+        instance = this;
         this.deck = new Deck();
         this.players = new ArrayList<>();
         this.turnManager = new TurnManager(numberOfPlayers);
@@ -30,6 +36,14 @@ public class Game {
         distributeInitialCards();
         initializeTopCard();
     }
+    public Game(List<Player> players, Deck deck, Table table, TurnManager turnManager, boolean gameWon) {
+    this.players = players;
+    this.deck = deck;
+    this.table = table;
+    this.turnManager = turnManager;
+    this.gameWon = gameWon;
+}
+
 
     private void distributeInitialCards() {
         for (Player player : players) {
@@ -141,4 +155,29 @@ public class Game {
             return colors[new Random().nextInt(colors.length)];
         }
     }
+   public static Game getInstance() {
+    return instance;
+}
+
+public static List<Player> getPlayers() {
+    return instance.players;
+}
+
+public static Deck getDeck() {
+    return instance.deck;
+}
+
+public static Table getTable() {
+    return instance.table;
+}
+
+public static TurnManager getTurnManager() {
+    return instance.turnManager;
+}
+
+public static boolean isGameWon() {
+    return instance.gameWon;
+}
+
+
 }

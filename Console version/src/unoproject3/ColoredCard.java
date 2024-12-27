@@ -2,6 +2,8 @@
 package unoproject3;
 
 
+
+
 public abstract class ColoredCard extends Card {
     protected String color;
 

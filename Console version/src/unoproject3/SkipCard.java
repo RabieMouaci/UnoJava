@@ -2,7 +2,10 @@
 package unoproject3;
 
 
+
+
 public class SkipCard extends ColoredCard implements SkipNextPlayer {
+   
     public SkipCard(String color) {
         super(color, "skip");
     }

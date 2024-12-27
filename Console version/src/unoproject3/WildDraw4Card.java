@@ -2,7 +2,10 @@
 package unoproject3;
 
 
+
+
 public class WildDraw4Card extends WildCard implements DrawNextPlayer, SkipNextPlayer {
+    private static final long serialVersionUID = 1L;
     public WildDraw4Card() {
         super("wild_draw4");
     }

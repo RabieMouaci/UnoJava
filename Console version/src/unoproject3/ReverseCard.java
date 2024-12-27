@@ -3,6 +3,7 @@ package unoproject3;
 
 
 public class ReverseCard extends ColoredCard {
+
     public ReverseCard(String color) {
         super(color, "reverse");
     }

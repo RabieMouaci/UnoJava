@@ -2,7 +2,9 @@
 package unoproject3;
 
 
+
 public class NormalWildCard extends WildCard {
+
     public NormalWildCard() {
         super("wild");
     }

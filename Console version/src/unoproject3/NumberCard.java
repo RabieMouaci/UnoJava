@@ -2,7 +2,9 @@
 package unoproject3;
 
 
-public class NumberCard extends ColoredCard {
+
+
+public class NumberCard extends ColoredCard{
     private int number;
 
     public NumberCard(String color, int number) {

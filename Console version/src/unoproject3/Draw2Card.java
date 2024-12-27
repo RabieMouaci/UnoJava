@@ -1,7 +1,10 @@
 
 package unoproject3;
 
-public class Draw2Card extends ColoredCard implements DrawNextPlayer, SkipNextPlayer {
+
+
+public class Draw2Card extends ColoredCard implements DrawNextPlayer, SkipNextPlayer{
+
     public Draw2Card(String color) {
         super(color, "draw2");
     }

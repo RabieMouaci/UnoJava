@@ -1,8 +1,11 @@
 
 package unoproject3;
 
+import java.io.Serializable;
 
-public class TurnManager {
+
+public class TurnManager implements Serializable{
+    private static final long serialVersionUID = 1L;
     private int currentPlayerIndex;
     private int direction;
     private int totalPlayers;

@@ -1,13 +1,14 @@
 
 package unoproject3;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
-public class Deck {
+public class Deck implements Serializable{
     private List<Card> cards;
-
+private static final long serialVersionUID = 1L;
     public Deck() {
         this.cards = new ArrayList<>();
         initializeDeck();
