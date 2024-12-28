@@ -1,4 +1,3 @@
-
 package unoproject3;
 
 public interface Playable {

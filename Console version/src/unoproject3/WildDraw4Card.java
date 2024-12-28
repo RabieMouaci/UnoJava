@@ -1,7 +1,4 @@
-
 package unoproject3;
-
-
 
 
 public class WildDraw4Card extends WildCard implements DrawNextPlayer, SkipNextPlayer {
@@ -27,10 +24,10 @@ public class WildDraw4Card extends WildCard implements DrawNextPlayer, SkipNextP
     }
     @Override
 public String toString() {
-    if (chosenColor == null) {
+    if (getChosenColor() == null) {
         return getType() + " (Choose Color)";
     }
-    return getType() + " (" + chosenColor + ")";
+    return getType() + " (" + getChosenColor() + ")";
 }
 
 }

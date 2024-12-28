@@ -1,7 +1,4 @@
-
 package unoproject3;
-
-
 
 
 public class NumberCard extends ColoredCard{
@@ -20,9 +17,9 @@ public class NumberCard extends ColoredCard{
     public boolean isPlayable(String tableColor, String tableType, Card topCard) {
         if (topCard instanceof NumberCard) {
             NumberCard topNumberCard = (NumberCard) topCard;
-            return this.color.equals(tableColor) || this.number == topNumberCard.getNumber();
+            return this.getColor().equals(tableColor) || this.number == topNumberCard.getNumber();
         }
-        return this.color.equals(tableColor);
+        return this.getColor().equals(tableColor);
     }
     @Override
 public String toString() {

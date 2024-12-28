@@ -1,6 +1,4 @@
-
 package unoproject3;
-
 
 
 public class NormalWildCard extends WildCard {
@@ -10,14 +8,14 @@ public class NormalWildCard extends WildCard {
     }
 
     public void changeColor(String newColor) {
-        this.chosenColor = newColor;
+      setChosenColor(newColor);
     }
     @Override
 public String toString() {
-    if (chosenColor == null) {
+    if (getChosenColor() == null) {
         return getType() + " (Choose Color)";
     }
-    return getType() + " (" + chosenColor + ")";
+    return getType() + " (" + getChosenColor() + ")";
 }
 @Override
     public boolean isPlayable(String tableColor, String tableType, Card topCard) {

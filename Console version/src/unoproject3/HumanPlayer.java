@@ -1,4 +1,3 @@
-
 package unoproject3;
 
 import java.io.IOException;
@@ -13,8 +12,8 @@ public class HumanPlayer extends Player {
     @Override
     public Card playCard(String tableColor, String tableType, Card topCard) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(name + "'s Turn");
-        System.out.println("Your hand: " + hand);
+        System.out.println(getName() + "'s Turn");
+        System.out.println("Your hand: " + getHand());
         System.out.println("Pick a card by index, 0 to draw a card, or 99 to save and exit:");
 
         int choice;
@@ -23,7 +22,7 @@ public class HumanPlayer extends Player {
 
             // Save and exit logic
             if (choice == 98) {
-                saveGame(scanner); 
+                saveGame(scanner); // Pass the scanner for file selection
                 System.out.println("Game saved. Exiting...");
                 System.exit(0); // Exit the game after saving
             }
@@ -34,10 +33,10 @@ public class HumanPlayer extends Player {
             }
 
             // Play card logic
-            if (choice >= 0 && choice < hand.size()) {
-                Card selectedCard = hand.get(choice);
+            if (choice >= 0 && choice < getHand().size()) {
+                Card selectedCard = getHand().get(choice);
                 if (selectedCard.isPlayable(tableColor, tableType, topCard)) {
-                    hand.remove(selectedCard);
+                    getHand().remove(selectedCard);
                     return selectedCard; // Return the selected card to be played
                 } else {
                     System.out.println("Invalid card selection. Try again.");
@@ -62,9 +61,9 @@ public class HumanPlayer extends Player {
         } while (saveChoice < 1 || saveChoice > 3);
 
         String saveFilePath = switch (saveChoice) {
-            case 1 -> "chof win rak hateha nta/resources/savegame.ser";
-            case 2 -> "chof win rak hateha nta/resources/savegame2.ser";
-            case 3 -> "chof win rak hateha nta/resources/savegame3.ser";
+            case 1 -> "put ur own path    /Unoproject3/src/resources/savegame.ser";
+            case 2 -> "put ur own path   /Unoproject3/src/resources/savegame2.ser";
+            case 3 -> "put ur own path   /Unoproject3/src/resources/savegame3.ser";
             default -> throw new IllegalStateException("Unexpected value: " + saveChoice);
         };
 

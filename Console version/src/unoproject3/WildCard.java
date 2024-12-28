@@ -2,10 +2,9 @@ package unoproject3;
 
 import java.io.Serializable;
 
-
 public abstract class WildCard extends Card implements Serializable{
     private static final long serialVersionUID = 1L;
-    protected String chosenColor;
+    private String chosenColor;
 
     public WildCard(String type) {
         super(type);

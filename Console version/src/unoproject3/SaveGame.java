@@ -1,7 +1,4 @@
-
 package unoproject3;
-
-
 import java.io.*;
 import java.util.List;
 
@@ -19,13 +16,13 @@ public class SaveGame implements Serializable {
         this.turnManager = turnManager;
         this.gameWon = gameWon;
     }
-
+    //durring saving time (in humanplayer class
     public void saveToFile(String filename) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(this);
         }
     }
-
+    //during loading (in main class)
     public static SaveGame loadFromFile(String filename) throws IOException, ClassNotFoundException {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
             return (SaveGame) ois.readObject();

@@ -1,14 +1,12 @@
-
 package unoproject3;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class Player implements Serializable{
     private static final long serialVersionUID = 1L;
-    protected String name;
-    protected List<Card> hand;
+    private String name;
+    private List<Card> hand;
 
     public Player(String name) {
         this.name = name;

@@ -1,10 +1,8 @@
-
 package unoproject3;
 import java.io.Serializable;
 
-
 public abstract class Card implements Serializable{
-    protected String type;
+    private String type;
     private static final long serialVersionUID = 1L;
 
     public Card(String type) {

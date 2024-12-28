@@ -1,7 +1,4 @@
-
 package unoproject3;
-
-
 
 
 public class SkipCard extends ColoredCard implements SkipNextPlayer {
@@ -16,7 +13,7 @@ public class SkipCard extends ColoredCard implements SkipNextPlayer {
     }
     @Override
     public boolean isPlayable(String tableColor, String tableType, Card topCard) {
-        return this.color.equals(tableColor) || "skip".equals(tableType);
+        return this.getColor().equals(tableColor) || "skip".equals(tableType);
     }
     @Override
 public String toString() {

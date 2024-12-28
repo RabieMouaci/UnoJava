@@ -1,6 +1,4 @@
-
 package unoproject3;
-
 
 public class ReverseCard extends ColoredCard {
 
@@ -13,7 +11,7 @@ public class ReverseCard extends ColoredCard {
     }
      @Override
     public boolean isPlayable(String tableColor, String tableType, Card topCard) {
-        return this.color.equals(tableColor) || "reverse".equals(tableType);
+        return this.getColor().equals(tableColor) || "reverse".equals(tableType);
     }
     @Override
 public String toString() {

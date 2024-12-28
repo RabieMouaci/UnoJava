@@ -1,7 +1,4 @@
-
 package unoproject3;
-
-
 
 public class Draw2Card extends ColoredCard implements DrawNextPlayer, SkipNextPlayer{
 
@@ -25,7 +22,7 @@ public String toString() {
 }
 @Override
     public boolean isPlayable(String tableColor, String tableType, Card topCard) {
-        return this.color.equals(tableColor) || "draw2".equals(tableType);
+        return this.getColor().equals(tableColor) || "draw2".equals(tableType);
     }
 }
 

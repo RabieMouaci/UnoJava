@@ -1,4 +1,3 @@
-
 package unoproject3;
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,7 +13,7 @@ public class BotPlayer extends Player {
     @Override
 public Card playCard(String tableColor, String tableType, Card topCard) {
     List<Card> playableCards = new ArrayList<>();
-    for (Card card : hand) {
+    for (Card card : getHand()) {
         if (card.isPlayable(tableColor, tableType, topCard)) {
             playableCards.add(card);
         }
@@ -22,7 +21,7 @@ public Card playCard(String tableColor, String tableType, Card topCard) {
 
     if (!playableCards.isEmpty()) {
         Card chosenCard = playableCards.get(new Random().nextInt(playableCards.size()));
-        hand.remove(chosenCard);
+        getHand().remove(chosenCard);
         return chosenCard; 
     }
 

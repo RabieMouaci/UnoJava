@@ -1,11 +1,9 @@
 package unoproject3;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Random;
-
+import java.util.Scanner;
 
 public class Game implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -16,7 +14,7 @@ public class Game implements Serializable{
     private boolean gameWon;
     private static Game instance;
 
-
+    //normal constructor
     public Game(int numberOfPlayers, List<String> playerTypes, String initialTableColor, String initialTableType) {
         instance = this;
         this.deck = new Deck();
@@ -36,15 +34,16 @@ public class Game implements Serializable{
         distributeInitialCards();
         initializeTopCard();
     }
+    //constructor for saved game
     public Game(List<Player> players, Deck deck, Table table, TurnManager turnManager, boolean gameWon) {
     this.players = players;
     this.deck = deck;
     this.table = table;
     this.turnManager = turnManager;
     this.gameWon = gameWon;
-}
+    }
 
-
+    //7 cards for every player
     private void distributeInitialCards() {
         for (Player player : players) {
             for (int i = 0; i < 7; i++) {
@@ -56,9 +55,9 @@ public class Game implements Serializable{
     private void initializeTopCard() {//need to be colored
         do {
             Card card = deck.drawCard();
-            if (card instanceof ColoredCard) {
+            if (card instanceof ColoredCard coloredCard) {
                 table.setTopCard(card);
-                table.setTableColor(((ColoredCard) card).getColor());
+                table.setTableColor(coloredCard.getColor());
                 table.setTableType(card.getType());
                 break;
             } else {
@@ -99,37 +98,41 @@ public class Game implements Serializable{
     }
 
     private void handleCardEffect(Card card, Player player) {
-        if (card instanceof SkipNextPlayer) {
-            ((SkipNextPlayer) card).skipNextPlayer(turnManager);
+        if (card instanceof SkipNextPlayer skipNextPlayer) {
+            skipNextPlayer.skipNextPlayer(turnManager);
             System.out.println(player.getName() + " played Skip! Skipping next player.");
         }
 
-        if (card instanceof DrawNextPlayer) {
+        if (card instanceof DrawNextPlayer drawNextPlayer) {
             Player nextPlayer = players.get(turnManager.getCurrentPlayerIndex());
-            ((DrawNextPlayer) card).drawNextPlayer(nextPlayer, deck);
+            drawNextPlayer.drawNextPlayer(nextPlayer, deck);
             System.out.println(player.getName() + " played Draw! Next player draws cards.");
         }
 
-        if (card instanceof ReverseCard) {
-            ((ReverseCard) card).reverseDirection(turnManager);
+        if (card instanceof ReverseCard reverseCard) {
+            reverseCard.reverseDirection(turnManager);
             System.out.println(player.getName() + " played Reverse! Reversing turn order.");
         }
 
         if (card instanceof WildCard) {
-            if (card instanceof NormalWildCard) {
-                String newColor = humanChooseColor(player);
-                ((NormalWildCard) card).changeColor(newColor);
-                table.setTableColor(newColor);
-                table.setTableType("wild");
-                System.out.println(player.getName() + " played Wild! Changing color to " + newColor + ".");
-            } else if (card instanceof WildDraw4Card) {
-                String newColor = humanChooseColor(player);
-                ((WildDraw4Card) card).setChosenColor(newColor);
-                table.setTableColor(newColor);
-                table.setTableType("wild_draw4");
-                Player nextPlayer = players.get(turnManager.getCurrentPlayerIndex());
-                ((WildDraw4Card) card).drawNextPlayer(nextPlayer, deck);
-                System.out.println(player.getName() + " played Wild Draw 4! Changing color to " + newColor + " and forcing next player to draw 4 cards.");
+            switch (card) {
+                case NormalWildCard normalWildCard -> {
+                    String newColor = humanChooseColor(player);
+                    normalWildCard.changeColor(newColor);
+                    table.setTableColor(newColor);
+                    table.setTableType("wild");
+                    System.out.println(player.getName() + " played Wild! Changing color to " + newColor + ".");
+                }
+                case WildDraw4Card wildDraw4Card -> {
+                    String newColor = humanChooseColor(player);
+                    wildDraw4Card.setChosenColor(newColor);
+                    table.setTableColor(newColor);
+                    table.setTableType("wild_draw4");
+                    Player nextPlayer = players.get(turnManager.getCurrentPlayerIndex());
+                    System.out.println(player.getName() + " played Wild Draw 4! Changing color to " + newColor + " and forcing next player to draw 4 cards.");
+                }
+                default -> {
+                }
             }
         }
     }
@@ -142,6 +145,7 @@ public class Game implements Serializable{
             do {
                 choice = scanner.nextInt();
             } while (choice < 1 || choice > 4);
+            scanner.close();
             return switch (choice) {
                 case 1 -> "red";
                 case 2 -> "blue";
@@ -149,7 +153,7 @@ public class Game implements Serializable{
                 case 4 -> "yellow";
                 default -> "red"; // makach li rah yaghlet ms en sais jamais
             };
-        } else {
+        }  else {
             // Bots choose a random color
             String[] colors = {"red", "blue", "green", "yellow"};
             return colors[new Random().nextInt(colors.length)];
