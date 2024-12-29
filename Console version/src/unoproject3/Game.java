@@ -145,7 +145,7 @@ public class Game implements Serializable{
             do {
                 choice = scanner.nextInt();
             } while (choice < 1 || choice > 4);
-            scanner.close();
+         
             return switch (choice) {
                 case 1 -> "red";
                 case 2 -> "blue";

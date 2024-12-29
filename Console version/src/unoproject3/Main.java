@@ -42,7 +42,7 @@ public class Main {
                     savedGame.getTurnManager(),
                     savedGame.isGameWon()
                 );
-                System.out.println("Game loaded successfully from " + saveFilePath + "!");
+                System.out.println("Game loaded successfully ");
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Failed to load the saved game. Starting a new game...");
                 game = createNewGame(scanner);
