@@ -33,10 +33,14 @@ public class GameGUI  {
 
     private void initialize() {
         // Main Frame
-        frame = new JFrame("UNO Game");
+        frame = new JFrame("UNO Game with Background");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1400, 800); 
-        frame.setLayout(new BorderLayout());
+        frame.setSize(1400, 800);
+
+        // Set background panel as content pane
+        BackgroundPanel backgroundPanel = new BackgroundPanel("src/resources/images/background.jpg");//background path
+        backgroundPanel.setLayout(new BorderLayout());
+        frame.setContentPane(backgroundPanel);
 
         // Current Player Label
         currentPlayerLabel = new JLabel("Current Player: ");
@@ -47,23 +51,26 @@ public class GameGUI  {
         // Main Center Panel for Table and Log
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
+        centerPanel.setOpaque(false);
         frame.add(centerPanel, BorderLayout.CENTER);
 
         // Table Panel
         tablePanel = new JPanel();
         tablePanel.setLayout(new FlowLayout());
         tablePanel.setBorder(BorderFactory.createTitledBorder("Table"));
+        tablePanel.setOpaque(false);
         centerPanel.add(tablePanel, BorderLayout.CENTER);
 
         // Label for Top Card Image
         topCardImageLabel = new JLabel();
-        topCardImageLabel.setPreferredSize(new Dimension(100, 150)); 
+        topCardImageLabel.setPreferredSize(new Dimension(100, 150));
         tablePanel.add(topCardImageLabel);
 
         // Log Panel
         logPanel = new JPanel();
         logPanel.setLayout(new BorderLayout());
         logPanel.setBorder(BorderFactory.createTitledBorder("Game Log"));
+        logPanel.setOpaque(false);
 
         logArea = new JTextArea(10, 50);
         logArea.setEditable(false);
@@ -83,7 +90,8 @@ public class GameGUI  {
         handPanel = new JPanel();
         handPanel.setBorder(BorderFactory.createTitledBorder("Your Hand"));
         handPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        handPanel.setPreferredSize(new Dimension(frame.getWidth(), 200)); 
+        handPanel.setPreferredSize(new Dimension(frame.getWidth(), 200));
+        handPanel.setOpaque(false);
         frame.add(handPanel, BorderLayout.SOUTH);
 
         frame.setLocationRelativeTo(null);
@@ -95,7 +103,7 @@ public class GameGUI  {
     Player currentPlayer = Game.getPlayers().get(Game.getTurnManager().getCurrentPlayerIndex());
     currentPlayerLabel.setText("Current Player: " + currentPlayer.getName());
 
-    // Check if it's a BotPlayer's turn
+    // Check if its a BotPlayer's turn
     if (currentPlayer instanceof BotPlayer) {
         playBotTurn((BotPlayer) currentPlayer);
         return; // Avoid updating the hand panel for bot players
@@ -145,16 +153,16 @@ public class GameGUI  {
     String cardFileName;
 
     if (card instanceof NumberCard) {
-        // Handle numbered cards
+        
         NumberCard numberCard = (NumberCard) card;
-        cardFileName = numberCard.getColor() + "_" + numberCard.getNumber() + ".jpg"; // Example: "red_7.jpg"
+        cardFileName = numberCard.getColor() + "_" + numberCard.getNumber() + ".jpg"; 
     } else if (card instanceof ColoredCard) {
-        // Handle special colored cards (e.g., skip, reverse)
+        
         ColoredCard coloredCard = (ColoredCard) card;
-        cardFileName = coloredCard.getColor() + "_" + coloredCard.getType() + ".jpg"; // Example: "red_skip.jpg"
+        cardFileName = coloredCard.getColor() + "_" + coloredCard.getType() + ".jpg"; 
     } else if (card.getType().equals("wild") || card.getType().equals("wild_draw4")) {
         // Handle wild cards
-        cardFileName = card.getType() + ".jpg"; // Example: "wild.jpg"
+        cardFileName = card.getType() + ".jpg"; 
     } else {
         throw new IllegalArgumentException("Unknown card type: " + card);
     }
@@ -165,17 +173,17 @@ public class GameGUI  {
     private void playBotTurn(BotPlayer botPlayer) {
     SwingUtilities.invokeLater(() -> {
         try {
-            Thread.sleep(1000); // Add a delay for realism
+            Thread.sleep(1000); 
 
             // Bot attempts to play a card
             for (Card card : botPlayer.getHand()) {
                 if (card.isPlayable(Game.getTable().getTableColor(), game.getTable().getTableType(), game.getTable().getTopCard())) {
-                    playCard(card); // Play the card
+                    playCard(card); 
                     return;
                 }
             }
 
-            // If no card is playable, draw a card
+            
             Card drawnCard = Game.getDeck().drawCard();
             botPlayer.drawCard(drawnCard);
             log(botPlayer.getName() + " drew a card.");
@@ -203,13 +211,13 @@ public class GameGUI  {
     Player currentPlayer = Game.getPlayers().get(Game.getTurnManager().getCurrentPlayerIndex());
 
     if (card.isPlayable(Game.getTable().getTableColor(), Game.getTable().getTableType(), Game.getTable().getTopCard())) {
-        // If the card is a Wild Card, ask for a color
+       
         if (card instanceof WildCard) {
             String chosenColor = promptForColor(currentPlayer);
             ((WildCard) card).setChosenColor(chosenColor);
             Game.getTable().setTableColor(chosenColor);
         } else {
-            // For non-Wild cards, update the table color to the color of the played card
+            
             if (card instanceof ColoredCard) {
                 Game.getTable().setTableColor(((ColoredCard) card).getColor());
             }
@@ -221,10 +229,9 @@ public class GameGUI  {
         currentPlayer.removeCard(card);
         log(currentPlayer.getName() + " played " + card);
 
-        // Handle any special card effects
+        
         handleCardEffect(card, currentPlayer);
 
-        // Check if the current player has won
         if (currentPlayer.getHand().isEmpty()) {
             log(currentPlayer.getName() + " wins!");
             JOptionPane.showMessageDialog(frame, currentPlayer.getName() + " wins!");
@@ -232,7 +239,7 @@ public class GameGUI  {
             return;
         }
 
-        // Move to the next player's turn
+       
         Game.getTurnManager().moveToNextPlayer();
         updateGameScreen();
         } else {
@@ -251,7 +258,7 @@ public class GameGUI  {
     }
 
     private void updatePlayerInfoTable() {
-    tableModel.setRowCount(0); // Clear existing rows
+    tableModel.setRowCount(0); 
     for (Player player : Game.getPlayers()) {
         if (player instanceof BotPlayer) {
             tableModel.addRow(new Object[]{player.getName(), player.getHand().size() + " cards (hidden)"});
@@ -273,7 +280,7 @@ public class GameGUI  {
                 colors,
                 colors[0]
             );
-            return chosenColor != null ? chosenColor.toLowerCase() : "red"; // Default to red
+            return chosenColor != null ? chosenColor.toLowerCase() : "red"; 
         }
         String[] colors = {"red", "blue", "green", "yellow"};
         return colors[new java.util.Random().nextInt(colors.length)];
@@ -284,46 +291,46 @@ public class GameGUI  {
     }
     private void handleCardEffect(Card card, Player player) {
     if (card instanceof SkipCard) {
-        Game.getTurnManager().moveToNextPlayer(); // Skip the next player
+        Game.getTurnManager().moveToNextPlayer(); 
         log(player.getName() + " played Skip! Skipping the next player.");
     }
 
     if (card instanceof ReverseCard) {
-        Game.getTurnManager().reverseDirection(); // Reverse the turn order
+        Game.getTurnManager().reverseDirection(); 
         log(player.getName() + " played Reverse! Reversing the turn order.");
     }
 
     if (card instanceof Draw2Card) {
-        // Move to the next player first
+        
         Game.getTurnManager().moveToNextPlayer();
         Player nextPlayer = Game.getPlayers().get(Game.getTurnManager().getCurrentPlayerIndex());
 
-        // Make the next player draw 2 cards
+       
         for (int i = 0; i < 2; i++) {
-            Card drawnCard = Game.getDeck().drawCard(); // Draw a single card
-            nextPlayer.drawCard(drawnCard); // Add card to the next player's hand
+            Card drawnCard = Game.getDeck().drawCard(); 
+            nextPlayer.drawCard(drawnCard); 
         }
         log(player.getName() + " played Draw 2! Forcing " + nextPlayer.getName() + " to draw 2 cards.");
     }
 
     if (card instanceof WildDraw4Card) {
-        // Move to the next player first
+       
         Game.getTurnManager().moveToNextPlayer();
         Player nextPlayer = Game.getPlayers().get(Game.getTurnManager().getCurrentPlayerIndex());
 
         // Make the next player draw 4 cards
         for (int i = 0; i < 4; i++) {
-            Card drawnCard = Game.getDeck().drawCard(); // Draw a single card
-            nextPlayer.drawCard(drawnCard); // Add card to the next player's hand
+            Card drawnCard = Game.getDeck().drawCard(); 
+            nextPlayer.drawCard(drawnCard); 
         }
         log(player.getName() + " played Wild Draw 4! Forcing " + nextPlayer.getName() + " to draw 4 cards.");
     }
 }
     private void saveGame() {
-   
+    
     String[] saveFiles = {"savegame.ser", "savegame2.ser", "savegame3.ser"};
     
-   
+    // choose file
     String selectedFile = (String) JOptionPane.showInputDialog(
             frame,
             "Choose a save file:",
@@ -336,11 +343,11 @@ public class GameGUI  {
 
     if (selectedFile != null) {
         try {
-            
-            String saveFilePath = "put ur own path    /Unoproject3/src/resources/" 
+            // save game
+            String saveFilePath = "ur own path /Unoproject5/src/resources/" 
                                   + selectedFile;
 
-            
+           
             SaveGame dataToSave = new SaveGame(
                     Game.getPlayers(),
                     Game.getDeck(),
@@ -349,7 +356,7 @@ public class GameGUI  {
                     Game.isGameWon()
             );
 
-           
+            
             dataToSave.saveToFile(saveFilePath);
 
             JOptionPane.showMessageDialog(frame, 
