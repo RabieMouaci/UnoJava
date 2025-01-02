@@ -360,7 +360,7 @@ public class GameGUI  {
             dataToSave.saveToFile(saveFilePath);
 
             JOptionPane.showMessageDialog(frame, 
-                    "Game saved successfully to " + saveFilePath);
+                    "Game saved successfully to " + selectedFile);
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(frame, 
