@@ -104,7 +104,7 @@ public class Game implements Serializable{
                     currentPlayer.drawCard(drawnCard);
                     System.out.println(currentPlayer.getName() + " drew a card.");
                 } catch (IllegalStateException e) {
-                    System.out.println("Deck is empty! The game ends in a draw.");
+                    System.out.println("Deck is empty! The game ends in a draw.");// game end on draw
                     gameWon = true;
                     return;
                 }

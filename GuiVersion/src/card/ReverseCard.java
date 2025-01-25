@@ -1,8 +1,7 @@
 package card;
 
 import game.TurnManager;
-import card.ColoredCard;
-import card.Card;
+
 
 public class ReverseCard extends ColoredCard {
 

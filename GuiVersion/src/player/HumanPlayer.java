@@ -66,7 +66,7 @@ public class HumanPlayer extends Player {
         String saveFilePath = switch (saveChoice) {
             case 1 -> "(put ur own path )/src/resources/savegame.ser";
             case 2 -> "(put ur own path )/src/resources/savegame2.ser";
-            case 3 -> "(put ur own path )/src/resources/savegame3.ser";
+            case 3 -> "(put ur own path )src/resources/savegame3.ser";
             default -> throw new IllegalStateException("Unexpected value: " + saveChoice);
         };
 

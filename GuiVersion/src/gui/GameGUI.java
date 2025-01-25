@@ -1,4 +1,3 @@
-
 package gui;
 
 
@@ -33,7 +32,7 @@ public class GameGUI  {
     private JTextArea logArea;
     private JTable playerInfoTable;
     private DefaultTableModel tableModel;
-    private JLabel topCardImageLabel; 
+    private JLabel topCardImageLabel; // Label to display top card image
 
     public GameGUI(Game game) {
         this.game = game;
@@ -374,7 +373,7 @@ public class GameGUI  {
             dataToSave.saveToFile(saveFilePath);
 
             JOptionPane.showMessageDialog(frame, 
-                    "Game saved successfully to " + saveFilePath);
+                    "Game saved successfully " );
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(frame, 

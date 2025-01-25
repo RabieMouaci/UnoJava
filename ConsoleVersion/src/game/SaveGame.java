@@ -1,7 +1,7 @@
 package game;
-import player.Player;
 import java.io.*;
 import java.util.List;
+import player.Player;
 
 public class SaveGame implements Serializable {
     private List<Player> players;
@@ -17,7 +17,7 @@ public class SaveGame implements Serializable {
         this.turnManager = turnManager;
         this.gameWon = gameWon;
     }
-    //durring saving time (in humanplayer class
+    //durring saving time (in humanplayer class)
     public void saveToFile(String filename) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(this);

@@ -1,6 +1,5 @@
 package card;
 
-import card.Card;
 import java.io.Serializable;
 
 public abstract class WildCard extends Card implements Serializable{

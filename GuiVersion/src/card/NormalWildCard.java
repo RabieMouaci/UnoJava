@@ -1,7 +1,5 @@
 package card;
 
-import card.Card;
-
 
 public class NormalWildCard extends WildCard {
 

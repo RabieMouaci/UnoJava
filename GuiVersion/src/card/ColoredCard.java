@@ -1,7 +1,5 @@
 package card;
 
-import card.Card;
-
 public abstract class ColoredCard extends Card {
     private String color;
     

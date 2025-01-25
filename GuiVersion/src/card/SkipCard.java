@@ -2,8 +2,7 @@ package card;
 
 import interfaces.SkipNextPlayer;
 import game.TurnManager;
-import card.ColoredCard;
-import card.Card;
+
 
 
 public class SkipCard extends ColoredCard implements SkipNextPlayer {

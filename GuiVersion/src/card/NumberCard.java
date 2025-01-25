@@ -1,7 +1,5 @@
 package card;
 
-import card.ColoredCard;
-import card.Card;
 
 
 public class NumberCard extends ColoredCard{

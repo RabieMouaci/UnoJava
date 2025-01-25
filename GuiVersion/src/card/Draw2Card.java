@@ -4,8 +4,6 @@ import game.Deck;
 import interfaces.DrawNextPlayer;
 import interfaces.SkipNextPlayer;
 import game.TurnManager;
-import card.ColoredCard;
-import card.Card;
 import player.Player;
 
 public class Draw2Card extends ColoredCard implements DrawNextPlayer, SkipNextPlayer{
